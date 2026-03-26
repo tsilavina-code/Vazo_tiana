@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ourson Demande en Amitié 💕</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; }
+body { 
+  font-family: 'Comic Sans MS', 'Arial', sans-serif; 
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  min-height: 100vh; 
+  padding: 20px; 
+  overflow-x: hidden;
+}
+
+.container { 
+  width: 100%; 
+  max-width: 900px; 
+}
+
+.scene { 
+  position: relative; 
+  width: 100%; 
+  height: 750px; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  flex-direction: column;
+}
+
+/* ========== GRANDE QUESTION ========== */
+.question-container {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  text-align: center;
+  width: 100%;
+}
+
+.question-text {
+  font-size: 0px;
+  color: white;
+  font-weight: bold;
+  text-shadow: 0 3px 10px rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.3);
+  padding: 15px 30px;
+  border-radius: 60px;
+  backdrop-filter: blur(5px);
+  white-space: nowrap;
+  opacity: 0;
+  transition: all 0.5s ease;
+  display: inline-block;
+}
+
+.question-text.visible {
+  font-size: 42px;
+  opacity: 1;
+}
+
+/* ========== MESSAGE RÉPONSE ========== */
+.response-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  background: linear-gradient(135deg, #FFD700, #FFA500);
+  padding: 20px 40px;
+  border-radius: 60px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  z-index: 200;
+  white-space: nowrap;
+  font-family: 'Comic Sans MS', 'Arial', sans-serif;
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  pointer-events: none;
+}
+
+.response-message.show {
+  transform: translate(-50%, -50%) scale(1);
+  font-size: 36px;
+}
+
+/* ========== GRAND EMOJI TRISTE ========== */
+.sad-emoji-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  z-index: 200;
+  pointer-events: none;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.sad-emoji-container.show {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.sad-emoji {
+  font-size: 0px;
+  filter: drop-shadow(0 10px 30px rgba(0,0,0,0.4));
+  animation: sadWobble 0.5s ease-in-out;
+}
+
+.sad-emoji-container.show .sad-emoji {
+  font-size: 180px;
+}
+
+@keyframes sadWobble {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-15deg); }
+  75% { transform: rotate(15deg); }
+}
+
+/* ========== OURSON ========== */
+.teddy-container {
+  position: relative;
+  width: 280px;
+  height: 340px;
+  cursor: pointer;
+  filter: drop-shadow(0 20px 50px rgba(0,0,0,0.4));
+  transition: transform 0.3s ease;
+  z-index: 20;
+}
+
+.teddy-container:hover {
+  transform: scale(1.05);
+}
+
+.teddy-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  animation: teddyBreathe 3s ease-in-out infinite;
+}
+
+@keyframes teddyBreathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.teddy-container.kissing {
+  animation: kissAnimation 1.5s ease-in-out;
+}
+
+@keyframes kissAnimation {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1) rotate(-5deg); }
+  50% { transform: scale(1.08); }
+  75% { transform: scale(1) rotate(5deg); }
+}
+
+.teddy-container.sad {
+  animation: sadAnimation 0.5s ease-out forwards;
+}
+
+@keyframes sadAnimation {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.97); }
+  100% { transform: scale(1); }
+}
+
+/* ========== COEUR ========== */
+.heart-container {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translate(-50%, -140px) scale(1);
+  opacity: 1;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 100;
+  pointer-events: none;
+}
+
+.heart-container.hide {
+  transform: translate(-50%, -140px) scale(0);
+  opacity: 0;
+}
+
+.heart-svg {
+  width: 160px;
+  height: 160px;
+  animation: heartBeat 0.6s ease-in-out infinite;
+  filter: drop-shadow(0 8px 20px rgba(255, 20, 147, 0.6));
+}
+
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.15); }
+  50% { transform: scale(1); }
+}
+
+.heart-svg.breaking {
+  animation: heartBreaking 1s ease-out forwards;
+}
+
+@keyframes heartBreaking {
+  0% { transform: scale(1) rotate(0deg); opacity: 1; }
+  30% { transform: scale(1.2) rotate(5deg); }
+  60% { transform: scale(0.8) rotate(-10deg); }
+  100% { transform: scale(0) rotate(-45deg); opacity: 0; }
+}
+
+/* ========== BOUTONS ========== */
+.buttons {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 40px;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.5s ease;
+  z-index: 100;
+}
+
+.buttons.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.buttons.disabled {
+  pointer-events: none;
+}
+
+button {
+  padding: 16px 50px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: 'Comic Sans MS', 'Arial', sans-serif;
+}
+
+.yes-btn {
+  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+  color: white;
+}
+
+.yes-btn:hover {
+  background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+  transform: scale(1.08);
+  box-shadow: 0 12px 30px rgba(46, 204, 113, 0.6);
+}
+
+.no-btn {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+}
+
+.no-btn:hover {
+  background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+  transform: scale(1.08);
+  box-shadow: 0 12px 30px rgba(231, 76, 60, 0.6);
+}
+
+.hidden { 
+  opacity: 0; 
+  pointer-events: none; 
+}
+
+/* ========== CONFETTI ========== */
+.confetti {
+  position: fixed;
+  pointer-events: none;
+  font-size: 28px;
+  font-weight: bold;
+  z-index: 1000;
+}
+
+@keyframes confettiFall {
+  0% {
+    opacity: 1;
+    transform: translateY(0) translateX(0) rotate(0deg) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(700px) translateX(var(--x-offset)) rotate(360deg) scale(0.3);
+  }
+}
+
+/* ========== LARMES ========== */
+.tears-container {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 90px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.tears-container.show {
+  animation: showTears 0.5s ease-out forwards;
+}
+
+@keyframes showTears {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.tear {
+  width: 10px;
+  height: 16px;
+  background: #87CEEB;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  animation: tearFall 2s ease-in infinite;
+}
+
+.tear-left {
+  animation-delay: 0s;
+}
+
+.tear-right {
+  animation-delay: 0.5s;
+}
+
+@keyframes tearFall {
+  0% { transform: rotate(-45deg) translateY(0); opacity: 1; }
+  100% { transform: rotate(-45deg) translateY(100px); opacity: 0; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="scene">
+    <!-- Grande question -->
+    <div class="question-container">
+      <div class="question-text" id="questionText">Veux-tu être ma petite amie ? 💕</div>
+    </div>
+    
+    <div class="teddy-container" id="teddy">
+      <img src="ourson.png" alt="ourson adorable" class="teddy-img">
+    </div>
+
+    <!-- Le coeur reste visible tout le temps -->
+    <div class="heart-container" id="heartContainer">
+      <svg class="heart-svg" id="heartSvg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="heartGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#FF1493;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#FF69B4;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        <path d="M50,85 C20,65 5,50 5,35 C5,20 15,10 25,10 C35,10 45,20 50,30 C55,20 65,10 75,10 C85,10 95,20 95,35 C95,50 80,65 50,85 Z" fill="url(#heartGradient)" stroke="#FF0080" stroke-width="2"/>
+      </svg>
+    </div>
+
+    <div class="tears-container" id="tears">
+      <div class="tear tear-left"></div>
+      <div class="tear tear-right"></div>
+    </div>
+
+    <div class="buttons" id="buttons">
+      <button class="yes-btn" id="yesBtn">Oui ! 💚</button>
+      <button class="no-btn" id="noBtn">Non 😢</button>
+    </div>
+
+    <!-- Message de réponse -->
+    <div class="response-message" id="responseMessage"></div>
+
+    <!-- Grand emoji triste -->
+    <div class="sad-emoji-container" id="sadEmojiContainer">
+      <div class="sad-emoji">😢💔</div>
+    </div>
+  </div>
+</div>
+
+<script>
+let teddyClicked = false;
+let choiceMade = false;
+
+document.getElementById('teddy').addEventListener('click', function(e) {
+  if (!teddyClicked) {
+    teddyClicked = true;
+    
+    // Afficher la grande question
+    document.getElementById('questionText').classList.add('visible');
+    // Le coeur reste visible, on ne le cache pas !
+    document.getElementById('buttons').classList.add('visible');
+  }
+});
+
+function createConfetti() {
+  const emojis = ['💕', '💖', '💗', '💘', '💝', '✨', '⭐', '🎉', '💫', '🌹', '💐', '🧸', '❤️', '💓', '💞'];
+  for (let i = 0; i < 100; i++) {
+    setTimeout(() => {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      confetti.style.left = Math.random() * 100 + '%';
+      confetti.style.top = '-20px';
+      confetti.style.fontSize = (20 + Math.random() * 30) + 'px';
+      
+      const duration = 2.5 + Math.random() * 1.5;
+      const xOffset = (Math.random() - 0.5) * 400;
+      
+      confetti.style.setProperty('--x-offset', xOffset + 'px');
+      confetti.style.animation = `confettiFall ${duration}s ease-in forwards`;
+      
+      document.body.appendChild(confetti);
+      
+      setTimeout(() => confetti.remove(), duration * 1000);
+    }, i * 30);
+  }
+}
+
+function respondYes() {
+  if (choiceMade) return;
+  choiceMade = true;
+  
+  // Désactiver les boutons
+  document.getElementById('buttons').classList.add('disabled');
+  
+  // Animation de l'ourson
+  document.getElementById('teddy').classList.add('kissing');
+  
+  // Le coeur reste visible et continue de battre (pas de break)
+  // On ne fait rien au coeur, il reste heureux !
+  
+  // Cacher la question
+  document.getElementById('questionText').classList.remove('visible');
+  
+  // Afficher le message de remerciement
+  const responseMsg = document.getElementById('responseMessage');
+  responseMsg.textContent = 'Merci ! Je le savais que tu m\'aimes bien ! 💕';
+  responseMsg.classList.add('show');
+  
+  // Confettis
+  createConfetti();
+  
+  // Nettoyer après quelques secondes
+  setTimeout(() => {
+    responseMsg.classList.remove('show');
+  }, 4000);
+}
+
+function respondNo() {
+  if (choiceMade) return;
+  choiceMade = true;
+  
+  // Désactiver les boutons
+  document.getElementById('buttons').classList.add('disabled');
+  
+  // Cacher la question
+  document.getElementById('questionText').classList.remove('visible');
+  
+  // Le coeur se brise (maintenant seulement quand on dit non)
+  document.getElementById('heartSvg').classList.add('breaking');
+  
+  // Animation triste de l'ourson
+  document.getElementById('teddy').classList.add('sad');
+  
+  // Faire apparaître les larmes
+  document.getElementById('tears').classList.add('show');
+  
+  // Afficher le grand emoji triste
+  const sadEmoji = document.getElementById('sadEmojiContainer');
+  sadEmoji.classList.add('show');
+  
+  // Nettoyer après quelques secondes
+  setTimeout(() => {
+    sadEmoji.classList.remove('show');
+  }, 3000);
+}
+
+// Attacher les événements aux boutons
+document.getElementById('yesBtn').addEventListener('click', respondYes);
+document.getElementById('noBtn').addEventListener('click', respondNo);
+</script>
+</body>
+</html>
