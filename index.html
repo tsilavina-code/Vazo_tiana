@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ourson Demande en Amitié 💕</title>
+<title>Ourson Interactif 💕</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html, body { width: 100%; height: 100%; }
@@ -33,7 +33,6 @@ body {
   flex-direction: column;
 }
 
-/* ========== GRANDE QUESTION ========== */
 .question-container {
   position: absolute;
   top: 20px;
@@ -64,7 +63,6 @@ body {
   opacity: 1;
 }
 
-/* ========== MESSAGE RÉPONSE ========== */
 .response-message {
   position: absolute;
   top: 50%;
@@ -89,7 +87,6 @@ body {
   font-size: 36px;
 }
 
-/* ========== GRAND EMOJI TRISTE ========== */
 .sad-emoji-container {
   position: absolute;
   top: 50%;
@@ -120,7 +117,6 @@ body {
   75% { transform: rotate(15deg); }
 }
 
-/* ========== OURSON ========== */
 .teddy-container {
   position: relative;
   width: 280px;
@@ -168,7 +164,6 @@ body {
   100% { transform: scale(1); }
 }
 
-/* ========== COEUR ========== */
 .heart-container {
   position: absolute;
   top: 30px;
@@ -178,11 +173,6 @@ body {
   transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   z-index: 100;
   pointer-events: none;
-}
-
-.heart-container.hide {
-  transform: translate(-50%, -140px) scale(0);
-  opacity: 0;
 }
 
 .heart-svg {
@@ -209,7 +199,6 @@ body {
   100% { transform: scale(0) rotate(-45deg); opacity: 0; }
 }
 
-/* ========== BOUTONS ========== */
 .buttons {
   position: absolute;
   bottom: 40px;
@@ -268,12 +257,6 @@ button {
   box-shadow: 0 12px 30px rgba(231, 76, 60, 0.6);
 }
 
-.hidden { 
-  opacity: 0; 
-  pointer-events: none; 
-}
-
-/* ========== CONFETTI ========== */
 .confetti {
   position: fixed;
   pointer-events: none;
@@ -293,7 +276,6 @@ button {
   }
 }
 
-/* ========== LARMES ========== */
 .tears-container {
   position: absolute;
   top: 60px;
@@ -341,7 +323,6 @@ button {
 <body>
 <div class="container">
   <div class="scene">
-    <!-- Grande question -->
     <div class="question-container">
       <div class="question-text" id="questionText">Veux-tu être ma petite amie ? 💕</div>
     </div>
@@ -350,9 +331,8 @@ button {
       <img src="ourson.png" alt="ourson adorable" class="teddy-img">
     </div>
 
-    <!-- Le coeur reste visible tout le temps -->
     <div class="heart-container" id="heartContainer">
-      <svg class="heart-svg" id="heartSvg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <svg class="heart-svg" id="heartSvg" viewBox="0 0 100 100">
         <defs>
           <linearGradient id="heartGradient" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" style="stop-color:#FF1493;stop-opacity:1" />
@@ -373,10 +353,7 @@ button {
       <button class="no-btn" id="noBtn">Non 😢</button>
     </div>
 
-    <!-- Message de réponse -->
     <div class="response-message" id="responseMessage"></div>
-
-    <!-- Grand emoji triste -->
     <div class="sad-emoji-container" id="sadEmojiContainer">
       <div class="sad-emoji">😢💔</div>
     </div>
@@ -387,13 +364,40 @@ button {
 let teddyClicked = false;
 let choiceMade = false;
 
+// ===== CONFIGURATION FACEBOOK MESSENGER =====
+// REMPLACE CETTE URL PAR TON WEBHOOK MAKE
+const WEBHOOK_URL = "https://hook.eu1.make.com/vu1xc7hx5jwe3sfrmmup4a23yzjvgin2";
+
+// Fonction pour envoyer la notification à Facebook via Make
+async function envoyerNotificationFacebook(reponse, details) {
+  try {
+    const data = {
+      reponse: reponse,
+      date: new Date().toLocaleString('fr-FR', { timeZone: 'Indian/Antananarivo' }),
+      heure: new Date().toLocaleTimeString('fr-FR'),
+      message: details,
+      lien: window.location.href
+    };
+    
+    const response = await fetch(WEBHOOK_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    });
+    
+    console.log("✅ Notification envoyée à Facebook:", data);
+  } catch (error) {
+    console.error("❌ Erreur d'envoi:", error);
+  }
+}
+
 document.getElementById('teddy').addEventListener('click', function(e) {
   if (!teddyClicked) {
     teddyClicked = true;
-    
-    // Afficher la grande question
     document.getElementById('questionText').classList.add('visible');
-    // Le coeur reste visible, on ne le cache pas !
     document.getElementById('buttons').classList.add('visible');
   }
 });
@@ -416,7 +420,6 @@ function createConfetti() {
       confetti.style.animation = `confettiFall ${duration}s ease-in forwards`;
       
       document.body.appendChild(confetti);
-      
       setTimeout(() => confetti.remove(), duration * 1000);
     }, i * 30);
   }
@@ -426,27 +429,19 @@ function respondYes() {
   if (choiceMade) return;
   choiceMade = true;
   
-  // Désactiver les boutons
+  // Envoyer notification Facebook
+  envoyerNotificationFacebook("OUI 💕", "Quelqu'un a dit OUI ! L'ourson est heureux ! 🧸❤️");
+  
   document.getElementById('buttons').classList.add('disabled');
-  
-  // Animation de l'ourson
   document.getElementById('teddy').classList.add('kissing');
-  
-  // Le coeur reste visible et continue de battre (pas de break)
-  // On ne fait rien au coeur, il reste heureux !
-  
-  // Cacher la question
   document.getElementById('questionText').classList.remove('visible');
   
-  // Afficher le message de remerciement
   const responseMsg = document.getElementById('responseMessage');
   responseMsg.textContent = 'Merci ! Je le savais que tu m\'aimes bien ! 💕';
   responseMsg.classList.add('show');
   
-  // Confettis
   createConfetti();
   
-  // Nettoyer après quelques secondes
   setTimeout(() => {
     responseMsg.classList.remove('show');
   }, 4000);
@@ -456,32 +451,23 @@ function respondNo() {
   if (choiceMade) return;
   choiceMade = true;
   
-  // Désactiver les boutons
+  // Envoyer notification Facebook
+  envoyerNotificationFacebook("NON 😢", "Quelqu'un a dit NON... Le cœur est brisé 💔");
+  
   document.getElementById('buttons').classList.add('disabled');
-  
-  // Cacher la question
   document.getElementById('questionText').classList.remove('visible');
-  
-  // Le coeur se brise (maintenant seulement quand on dit non)
   document.getElementById('heartSvg').classList.add('breaking');
-  
-  // Animation triste de l'ourson
   document.getElementById('teddy').classList.add('sad');
-  
-  // Faire apparaître les larmes
   document.getElementById('tears').classList.add('show');
   
-  // Afficher le grand emoji triste
   const sadEmoji = document.getElementById('sadEmojiContainer');
   sadEmoji.classList.add('show');
   
-  // Nettoyer après quelques secondes
   setTimeout(() => {
     sadEmoji.classList.remove('show');
   }, 3000);
 }
 
-// Attacher les événements aux boutons
 document.getElementById('yesBtn').addEventListener('click', respondYes);
 document.getElementById('noBtn').addEventListener('click', respondNo);
 </script>
