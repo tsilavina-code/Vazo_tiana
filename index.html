@@ -33,6 +33,35 @@ body {
   flex-direction: column;
 }
 
+/* ========== INSTRUCTION "CLIQUE SUR MOI" ========== */
+.instruction {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  text-shadow: 0 3px 6px rgba(0,0,0,0.4);
+  animation: bounce 2s ease-in-out infinite;
+  z-index: 50;
+  background: rgba(0,0,0,0.3);
+  padding: 10px 25px;
+  border-radius: 50px;
+  backdrop-filter: blur(5px);
+  white-space: nowrap;
+}
+
+.instruction.hide {
+  display: none;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-15px); }
+}
+
+/* ========== GRANDE QUESTION ========== */
 .question-container {
   position: absolute;
   top: 20px;
@@ -323,6 +352,10 @@ button {
 <body>
 <div class="container">
   <div class="scene">
+    <!-- INSTRUCTION "CLIQUE SUR MOI" -->
+    <div class="instruction" id="instruction">Clique sur moi ! 💕</div>
+
+    <!-- GRANDE QUESTION (cachée au début) -->
     <div class="question-container">
       <div class="question-text" id="questionText">Veux-tu être ma petite amie ? 💕</div>
     </div>
@@ -364,40 +397,43 @@ button {
 let teddyClicked = false;
 let choiceMade = false;
 
-// ===== CONFIGURATION FACEBOOK MESSENGER =====
-// REMPLACE CETTE URL PAR TON WEBHOOK MAKE
-const WEBHOOK_URL = "https://hook.eu1.make.com/vu1xc7hx5jwe3sfrmmup4a23yzjvgin2";
+// ===== REMPLACE AVEC TON URL MAKE =====
+const WEBHOOK_URL = "https://hook.make.com/TON_URL_ICI";
 
-// Fonction pour envoyer la notification à Facebook via Make
-async function envoyerNotificationFacebook(reponse, details) {
+async function envoyerNotification(reponse, details) {
   try {
     const data = {
       reponse: reponse,
-      date: new Date().toLocaleString('fr-FR', { timeZone: 'Indian/Antananarivo' }),
+      date: new Date().toLocaleDateString('fr-FR'),
       heure: new Date().toLocaleTimeString('fr-FR'),
-      message: details,
-      lien: window.location.href
+      message: details
     };
     
-    const response = await fetch(WEBHOOK_URL, {
+    await fetch(WEBHOOK_URL, {
       method: 'POST',
       mode: 'no-cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     });
     
-    console.log("✅ Notification envoyée à Facebook:", data);
+    console.log("✅ Notification envoyée:", reponse);
   } catch (error) {
-    console.error("❌ Erreur d'envoi:", error);
+    console.error("❌ Erreur:", error);
   }
 }
 
+// Quand on clique sur l'ourson
 document.getElementById('teddy').addEventListener('click', function(e) {
   if (!teddyClicked) {
     teddyClicked = true;
+    
+    // Cacher l'instruction "Clique sur moi"
+    document.getElementById('instruction').classList.add('hide');
+    
+    // Afficher la grande question
     document.getElementById('questionText').classList.add('visible');
+    
+    // Afficher les boutons
     document.getElementById('buttons').classList.add('visible');
   }
 });
@@ -429,8 +465,8 @@ function respondYes() {
   if (choiceMade) return;
   choiceMade = true;
   
-  // Envoyer notification Facebook
-  envoyerNotificationFacebook("OUI 💕", "Quelqu'un a dit OUI ! L'ourson est heureux ! 🧸❤️");
+  // Envoyer notification
+  envoyerNotification("OUI 💕", "Quelqu'un a dit OUI ! 🧸❤️");
   
   document.getElementById('buttons').classList.add('disabled');
   document.getElementById('teddy').classList.add('kissing');
@@ -451,8 +487,8 @@ function respondNo() {
   if (choiceMade) return;
   choiceMade = true;
   
-  // Envoyer notification Facebook
-  envoyerNotificationFacebook("NON 😢", "Quelqu'un a dit NON... Le cœur est brisé 💔");
+  // Envoyer notification
+  envoyerNotification("NON 😢", "Quelqu'un a dit NON... 💔");
   
   document.getElementById('buttons').classList.add('disabled');
   document.getElementById('questionText').classList.remove('visible');
