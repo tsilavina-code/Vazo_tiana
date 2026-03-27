@@ -2,55 +2,61 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
 <title>Ourson Interactif 💕</title>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-html, body { width: 100%; height: 100%; }
-body { 
-  font-family: 'Comic Sans MS', 'Chalkboard SE', 'Arial', sans-serif; 
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-  display: flex; 
-  justify-content: center; 
-  align-items: center; 
-  min-height: 100vh; 
-  padding: 15px; 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.container { 
-  width: 100%; 
-  max-width: 500px; 
-  margin: auto;
+body {
+  font-family: 'Comic Sans MS', 'Chalkboard SE', 'Arial', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
 }
 
-.scene { 
-  position: relative; 
-  width: 100%; 
-  min-height: 80vh;
-  display: flex; 
-  justify-content: center; 
-  align-items: center; 
+.container {
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+/* Zone principale */
+.scene {
+  position: relative;
+  display: flex;
   flex-direction: column;
-  padding: 20px 0;
+  align-items: center;
+  justify-content: center;
+  min-height: 85vh;
 }
 
-/* ========== INSTRUCTION ========== */
+/* ========== INSTRUCTION (EN HAUT, DÉCALÉE POUR NE PAS ÊTRE CACHÉE) ========== */
 .instruction {
-  position: absolute;
-  top: -20px;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
+  text-align: center;
+  margin-bottom: 20px;
   color: white;
-  font-size: clamp(18px, 5vw, 24px);
   font-weight: bold;
+  font-size: clamp(18px, 5vw, 28px);
   text-shadow: 0 3px 6px rgba(0,0,0,0.4);
-  animation: bounce 2s ease-in-out infinite;
-  z-index: 50;
-  background: rgba(0,0,0,0.4);
-  padding: 8px 20px;
+  background: rgba(0,0,0,0.35);
+  padding: 10px 24px;
   border-radius: 50px;
-  backdrop-filter: blur(5px);
-  white-space: nowrap;
+  backdrop-filter: blur(8px);
+  display: inline-block;
+  width: auto;
+  z-index: 30;
+  animation: bounce 2s ease-in-out infinite;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
 .instruction.hide {
@@ -58,123 +64,103 @@ body {
 }
 
 @keyframes bounce {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(-10px); }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
 
-/* ========== QUESTION ========== */
+/* ========== QUESTION (EN HAUT AUSSI) ========== */
 .question-container {
-  position: absolute;
-  top: -20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 50;
+  position: relative;
   text-align: center;
+  margin-bottom: 20px;
   width: 100%;
-  padding: 0 10px;
+  z-index: 30;
 }
 
 .question-text {
-  font-size: 0px;
-  color: white;
+  display: inline-block;
   font-weight: bold;
+  color: white;
   text-shadow: 0 3px 10px rgba(0,0,0,0.5);
   background: rgba(0,0,0,0.4);
-  padding: 12px 20px;
+  padding: 12px 24px;
   border-radius: 60px;
-  backdrop-filter: blur(5px);
-  white-space: normal;
-  word-wrap: break-word;
+  backdrop-filter: blur(8px);
+  font-size: 0;
   opacity: 0;
-  transition: all 0.5s ease;
-  display: inline-block;
-  max-width: 90%;
+  transition: all 0.4s ease;
+  max-width: 95%;
+  letter-spacing: 0.5px;
 }
 
 .question-text.visible {
-  font-size: clamp(24px, 6vw, 42px);
+  font-size: clamp(20px, 5.5vw, 38px);
   opacity: 1;
 }
 
-/* ========== MESSAGE RÉPONSE ========== */
-.response-message {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  font-weight: bold;
-  color: white;
-  text-align: center;
-  background: linear-gradient(135deg, #FFD700, #FFA500);
-  padding: 20px 30px;
-  border-radius: 60px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-  z-index: 200;
-  font-family: 'Comic Sans MS', 'Arial', sans-serif;
-  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  pointer-events: none;
-  white-space: normal;
-  text-align: center;
-  max-width: 85%;
-  width: max-content;
+/* ========== ZONE DE L'OURSON AVEC LE COEUR ========== */
+.teddy-zone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0 30px;
+  width: 100%;
 }
 
-.response-message.show {
-  transform: translate(-50%, -50%) scale(1);
-  font-size: clamp(20px, 5vw, 36px);
+/* Cœur positionné AU-DESSUS de l'ourson (pas devant l'instruction) */
+.heart-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+  z-index: 15;
 }
 
-/* ========== EMOJI TRISTE ========== */
-.sad-emoji-container {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  z-index: 200;
-  pointer-events: none;
-  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+.heart-svg {
+  width: clamp(80px, 20vw, 130px);
+  height: auto;
+  animation: heartBeat 0.7s ease-in-out infinite;
+  filter: drop-shadow(0 6px 12px rgba(255, 20, 147, 0.5));
 }
 
-.sad-emoji-container.show {
-  transform: translate(-50%, -50%) scale(1);
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.1); }
+  50% { transform: scale(1); }
 }
 
-.sad-emoji-container.show .sad-emoji {
-  font-size: clamp(100px, 25vw, 180px);
+.heart-svg.breaking {
+  animation: heartBreaking 0.8s ease-out forwards;
 }
 
-.sad-emoji {
-  font-size: 0px;
-  filter: drop-shadow(0 10px 30px rgba(0,0,0,0.4));
-  animation: sadWobble 0.5s ease-in-out;
+@keyframes heartBreaking {
+  0% { transform: scale(1) rotate(0deg); opacity: 1; }
+  40% { transform: scale(1.2) rotate(8deg); }
+  70% { transform: scale(0.6) rotate(-15deg); opacity: 0.8; }
+  100% { transform: scale(0) rotate(-40deg); opacity: 0; }
 }
 
-@keyframes sadWobble {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(-15deg); }
-  75% { transform: rotate(15deg); }
-}
-
-/* ========== OURSON ========== */
+/* Oursooon 🧸 */
 .teddy-container {
   position: relative;
-  width: min(280px, 70vw);
-  height: auto;
   cursor: pointer;
-  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.3));
-  transition: transform 0.3s ease;
+  filter: drop-shadow(0 15px 25px rgba(0,0,0,0.3));
+  transition: transform 0.25s ease;
   z-index: 20;
-  margin: 60px 0 40px;
+  width: clamp(200px, 55vw, 280px);
+  margin-top: 5px;
 }
 
 .teddy-container:active {
-  transform: scale(0.98);
+  transform: scale(0.97);
 }
 
 .teddy-img {
   width: 100%;
   height: auto;
-  object-fit: contain;
+  display: block;
   animation: teddyBreathe 3s ease-in-out infinite;
 }
 
@@ -184,77 +170,38 @@ body {
 }
 
 .teddy-container.kissing {
-  animation: kissAnimation 1.5s ease-in-out;
+  animation: kissAnimation 1.2s ease-in-out;
 }
 
 @keyframes kissAnimation {
   0%, 100% { transform: scale(1); }
-  25% { transform: scale(1) rotate(-3deg); }
-  50% { transform: scale(1.08); }
-  75% { transform: scale(1) rotate(3deg); }
+  30% { transform: scale(1.05) rotate(-3deg); }
+  60% { transform: scale(1.1) rotate(3deg); }
 }
 
 .teddy-container.sad {
-  animation: sadAnimation 0.5s ease-out forwards;
+  animation: sadShake 0.4s ease-out;
 }
 
-@keyframes sadAnimation {
-  0% { transform: scale(1); }
-  50% { transform: scale(0.98); }
-  100% { transform: scale(1); }
-}
-
-/* ========== COEUR ========== */
-.heart-container {
-  position: absolute;
-  top: -60px;
-  left: 50%;
-  transform: translate(-50%, 0) scale(1);
-  opacity: 1;
-  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  z-index: 100;
-  pointer-events: none;
-}
-
-.heart-svg {
-  width: min(120px, 25vw);
-  height: auto;
-  animation: heartBeat 0.6s ease-in-out infinite;
-  filter: drop-shadow(0 8px 15px rgba(255, 20, 147, 0.5));
-}
-
-@keyframes heartBeat {
-  0%, 100% { transform: scale(1); }
-  25% { transform: scale(1.12); }
-  50% { transform: scale(1); }
-}
-
-.heart-svg.breaking {
-  animation: heartBreaking 1s ease-out forwards;
-}
-
-@keyframes heartBreaking {
-  0% { transform: scale(1) rotate(0deg); opacity: 1; }
-  30% { transform: scale(1.2) rotate(5deg); }
-  60% { transform: scale(0.6) rotate(-15deg); }
-  100% { transform: scale(0) rotate(-45deg); opacity: 0; }
+@keyframes sadShake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+  100% { transform: translateX(0); }
 }
 
 /* ========== BOUTONS ========== */
 .buttons {
-  position: relative;
-  bottom: 0;
-  left: 0;
-  transform: none;
   display: flex;
-  gap: 20px;
+  gap: clamp(20px, 8vw, 50px);
   justify-content: center;
+  margin-top: 25px;
   opacity: 0;
   pointer-events: none;
-  transition: all 0.5s ease;
-  z-index: 100;
-  margin-top: 30px;
+  transition: opacity 0.4s ease;
   flex-wrap: wrap;
+  width: 100%;
+  z-index: 25;
 }
 
 .buttons.visible {
@@ -264,87 +211,126 @@ body {
 
 .buttons.disabled {
   pointer-events: none;
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
 button {
-  padding: 12px 30px;
+  padding: 12px 28px;
   font-size: clamp(16px, 4vw, 20px);
   font-weight: bold;
   border: none;
-  border-radius: 50px;
+  border-radius: 60px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  transition: all 0.2s ease;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
   text-transform: uppercase;
   letter-spacing: 1px;
   font-family: 'Comic Sans MS', 'Arial', sans-serif;
-  min-width: 120px;
+  min-width: 110px;
+  background-size: 200% auto;
 }
 
 button:active {
-  transform: scale(0.95);
+  transform: scale(0.96);
 }
 
 .yes-btn {
-  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
   color: white;
 }
 
 .no-btn {
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
   color: white;
 }
 
-/* ========== CONFETTI ========== */
-.confetti {
+/* ========== MESSAGES & EMOJIS ========== */
+.response-message {
   position: fixed;
-  pointer-events: none;
-  font-size: clamp(20px, 5vw, 28px);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  background: linear-gradient(135deg, #FFD966, #FFB347);
+  color: white;
+  padding: 18px 28px;
+  border-radius: 60px;
   font-weight: bold;
-  z-index: 1000;
+  text-align: center;
+  box-shadow: 0 20px 35px rgba(0,0,0,0.3);
+  z-index: 200;
+  transition: transform 0.35s cubic-bezier(0.34, 1.2, 0.64, 1);
+  white-space: nowrap;
+  font-family: 'Comic Sans MS', 'Arial', sans-serif;
+  max-width: 85vw;
 }
 
-@keyframes confettiFall {
-  0% {
-    opacity: 1;
-    transform: translateY(0) translateX(0) rotate(0deg) scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(100vh) translateX(var(--x-offset)) rotate(360deg) scale(0.3);
-  }
+.response-message.show {
+  transform: translate(-50%, -50%) scale(1);
+  font-size: clamp(22px, 5.5vw, 38px);
+  white-space: normal;
+  width: auto;
+  line-height: 1.4;
+}
+
+.sad-emoji-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  z-index: 200;
+  transition: transform 0.4s cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+
+.sad-emoji-container.show {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.sad-emoji {
+  font-size: 0;
+  filter: drop-shadow(0 10px 25px rgba(0,0,0,0.4));
+  animation: wobble 0.5s ease;
+}
+
+.sad-emoji-container.show .sad-emoji {
+  font-size: clamp(90px, 25vw, 160px);
+}
+
+@keyframes wobble {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-12deg); }
+  75% { transform: rotate(12deg); }
 }
 
 /* ========== LARMES ========== */
 .tears-container {
   position: absolute;
-  top: 30%;
+  top: 55%;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: min(60px, 15vw);
+  gap: clamp(35px, 12vw, 75px);
   opacity: 0;
   pointer-events: none;
-  z-index: 10;
+  z-index: 18;
 }
 
 .tears-container.show {
-  animation: showTears 0.5s ease-out forwards;
+  opacity: 1;
+  animation: fadeTears 0.3s ease;
 }
 
-@keyframes showTears {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
+@keyframes fadeTears {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .tear {
   width: 8px;
-  height: 14px;
-  background: #87CEEB;
+  height: 18px;
+  background: #a0d0ff;
   border-radius: 50% 50% 50% 0;
   transform: rotate(-45deg);
-  animation: tearFall 2s ease-in infinite;
+  animation: fall 2s infinite ease-in;
 }
 
 .tear-left {
@@ -355,25 +341,83 @@ button:active {
   animation-delay: 0.5s;
 }
 
-@keyframes tearFall {
+@keyframes fall {
   0% { transform: rotate(-45deg) translateY(0); opacity: 1; }
-  100% { transform: rotate(-45deg) translateY(80px); opacity: 0; }
+  80% { opacity: 0.8; }
+  100% { transform: rotate(-45deg) translateY(70px); opacity: 0; }
 }
 
-/* Responsive */
-@media (max-width: 480px) {
-  .buttons {
-    gap: 15px;
+/* ========== CONFETTIS ========== */
+.confetti {
+  position: fixed;
+  pointer-events: none;
+  font-size: clamp(20px, 5vw, 30px);
+  z-index: 999;
+  font-weight: bold;
+}
+
+@keyframes confettiFall {
+  0% {
+    opacity: 1;
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100vh) translateX(var(--x-offset)) rotate(360deg);
+  }
+}
+
+/* ========== RESPONSIVE ULTRA ADAPTATIF ========== */
+@media (max-width: 550px) {
+  .container {
+    max-width: 380px;
+  }
+  .instruction {
+    font-size: 18px;
+    padding: 8px 20px;
+  }
+  .question-text.visible {
+    font-size: 22px;
   }
   button {
     padding: 10px 20px;
     min-width: 100px;
   }
   .teddy-container {
-    margin: 40px 0 30px;
+    width: 230px;
   }
-  .heart-container {
-    top: -40px;
+  .heart-svg {
+    width: 85px;
+  }
+}
+
+@media (max-width: 420px) {
+  .teddy-container {
+    width: 200px;
+  }
+  .heart-svg {
+    width: 70px;
+  }
+  .buttons {
+    gap: 15px;
+  }
+  button {
+    font-size: 14px;
+    padding: 9px 16px;
+    min-width: 85px;
+  }
+  .instruction {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 350px) {
+  .teddy-container {
+    width: 170px;
+  }
+  .question-text.visible {
+    font-size: 18px;
+    padding: 8px 16px;
   }
 }
 </style>
@@ -381,40 +425,51 @@ button:active {
 <body>
 <div class="container">
   <div class="scene">
-    <!-- INSTRUCTION -->
-    <div class="instruction" id="instruction">✨ Clique sur moi ! ✨</div>
 
-    <!-- QUESTION -->
+    <!-- INSTRUCTION EN HAUT (pas cachée) -->
+    <div class="instruction" id="instruction">
+      ✨ Clique sur moi ! ✨
+    </div>
+
+    <!-- QUESTION (apparaît après clic) -->
     <div class="question-container">
-      <div class="question-text" id="questionText">Veux-tu être ma petite amie ? 💕</div>
-    </div>
-    
-    <div class="teddy-container" id="teddy">
-      <img src="ourson.png" alt="ourson adorable" class="teddy-img" id="teddyImg">
+      <div class="question-text" id="questionText">
+        💖 Veux-tu être ma petite amie ? 💖
+      </div>
     </div>
 
-    <div class="heart-container" id="heartContainer">
-      <svg class="heart-svg" id="heartSvg" viewBox="0 0 100 100">
-        <defs>
-          <linearGradient id="heartGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style="stop-color:#FF1493;stop-opacity:1" />
-            <stop offset="100%" style="stop-color:#FF69B4;stop-opacity:1" />
-          </linearGradient>
-        </defs>
-        <path d="M50,85 C20,65 5,50 5,35 C5,20 15,10 25,10 C35,10 45,20 50,30 C55,20 65,10 75,10 C85,10 95,20 95,35 C95,50 80,65 50,85 Z" fill="url(#heartGradient)" stroke="#FF0080" stroke-width="2"/>
-      </svg>
+    <!-- ZONE OURSON + CŒUR (le cœur est au-dessus de l'ourson, PAS devant le texte) -->
+    <div class="teddy-zone">
+      <div class="heart-container">
+        <svg class="heart-svg" id="heartSvg" viewBox="0 0 100 100">
+          <defs>
+            <linearGradient id="heartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FF1493" />
+              <stop offset="100%" stop-color="#FF69B4" />
+            </linearGradient>
+          </defs>
+          <path d="M50,85 C20,65 5,50 5,35 C5,20 15,10 25,10 C35,10 45,20 50,30 C55,20 65,10 75,10 C85,10 95,20 95,35 C95,50 80,65 50,85Z" fill="url(#heartGrad)" stroke="#FF4080" stroke-width="2" />
+        </svg>
+      </div>
+
+      <div class="teddy-container" id="teddy">
+        <img src="ourson.png" alt="ourson" class="teddy-img">
+      </div>
     </div>
 
+    <!-- LARMES (apparaissent si NON) -->
     <div class="tears-container" id="tears">
       <div class="tear tear-left"></div>
       <div class="tear tear-right"></div>
     </div>
 
+    <!-- BOUTONS OUI / NON -->
     <div class="buttons" id="buttons">
       <button class="yes-btn" id="yesBtn">💚 Oui ! 💚</button>
       <button class="no-btn" id="noBtn">💔 Non 💔</button>
     </div>
 
+    <!-- MESSAGES FLOTTANTS -->
     <div class="response-message" id="responseMessage"></div>
     <div class="sad-emoji-container" id="sadEmojiContainer">
       <div class="sad-emoji">😢💔</div>
@@ -423,161 +478,107 @@ button:active {
 </div>
 
 <script>
-let teddyClicked = false;
-let choiceMade = false;
+// Ton URL Formspree (à remplacer par la tienne)
+const FORMSPREE_URL = "https://formspree.io/f/mpqowbqr";
 
-// ===== CONFIGURATION EMAIL (Formspree) =====
-// Remplace par TON URL Formspree
-const EMAIL_URL = "https://formspree.io/f/mpqowbqr";
+let isClicked = false;
+let choiceDone = false;
 
-async function envoyerReponse(reponse, details) {
+async function sendReply(type, details) {
   try {
-    const data = {
-      reponse: reponse,
-      date: new Date().toLocaleString('fr-FR', { timeZone: 'Indian/Antananarivo' }),
-      heure: new Date().toLocaleTimeString('fr-FR'),
-      message: details,
-      userAgent: navigator.userAgent
-    };
-    
-    const response = await fetch(EMAIL_URL, {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify(data)
+    await fetch(FORMSPREE_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        reponse: type,
+        date: new Date().toLocaleString("fr-FR"),
+        detail: details,
+      }),
     });
-    
-    if (response.ok) {
-      console.log("✅ Réponse envoyée par email:", reponse);
-    } else {
-      console.log("⚠️ Email non envoyé, mais l'animation continue");
-    }
-  } catch (error) {
-    console.log("⚠️ Erreur d'envoi (l'animation continue):", error.message);
+    console.log("✅ Notification envoyée :", type);
+  } catch (err) {
+    console.warn("⚠️ Erreur envoi (mais le jeu continue)");
   }
 }
 
-// Clique sur l'ourson
-const teddy = document.getElementById('teddy');
-teddy.addEventListener('click', function(e) {
-  e.stopPropagation();
-  if (!teddyClicked) {
-    teddyClicked = true;
-    
-    // Cacher l'instruction
-    document.getElementById('instruction').classList.add('hide');
-    
-    // Afficher la question
-    document.getElementById('questionText').classList.add('visible');
-    
-    // Afficher les boutons
-    document.getElementById('buttons').classList.add('visible');
-  }
+// CLIC SUR L'OURSON
+document.getElementById("teddy").addEventListener("click", () => {
+  if (isClicked) return;
+  isClicked = true;
+
+  // Cacher l'instruction
+  document.getElementById("instruction").classList.add("hide");
+  // Afficher la grande question
+  document.getElementById("questionText").classList.add("visible");
+  // Afficher les boutons
+  document.getElementById("buttons").classList.add("visible");
 });
 
-// Confettis
-function createConfetti() {
-  const emojis = ['💕', '💖', '💗', '💘', '💝', '✨', '⭐', '🎉', '💫', '🌹', '💐', '🧸', '❤️', '💓', '💞'];
+// CONFETTIS
+function launchConfetti() {
+  const icons = ["💕", "💖", "💗", "💘", "💝", "✨", "⭐", "🎉", "💫", "🌹", "💐", "🧸", "❤️"];
   for (let i = 0; i < 80; i++) {
     setTimeout(() => {
-      const confetti = document.createElement('div');
-      confetti.className = 'confetti';
-      confetti.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-      confetti.style.left = Math.random() * 100 + '%';
-      confetti.style.top = '-30px';
-      confetti.style.fontSize = (18 + Math.random() * 25) + 'px';
-      
-      const duration = 2 + Math.random() * 1.5;
-      const xOffset = (Math.random() - 0.5) * 300;
-      
-      confetti.style.setProperty('--x-offset', xOffset + 'px');
-      confetti.style.animation = `confettiFall ${duration}s linear forwards`;
-      
-      document.body.appendChild(confetti);
-      setTimeout(() => confetti.remove(), duration * 1000);
+      const conf = document.createElement("div");
+      conf.className = "confetti";
+      conf.textContent = icons[Math.floor(Math.random() * icons.length)];
+      conf.style.left = Math.random() * 100 + "%";
+      conf.style.top = "-20px";
+      conf.style.fontSize = 18 + Math.random() * 28 + "px";
+      const offset = (Math.random() - 0.5) * 320;
+      const duration = 1.8 + Math.random() * 1.6;
+      conf.style.setProperty("--x-offset", offset + "px");
+      conf.style.animation = `confettiFall ${duration}s linear forwards`;
+      document.body.appendChild(conf);
+      setTimeout(() => conf.remove(), duration * 1000);
     }, i * 20);
   }
 }
 
-// Réponse OUI
-function respondYes() {
-  if (choiceMade) return;
-  choiceMade = true;
-  
-  console.log("✅ OUI sélectionné");
-  
-  // Envoyer l'email
-  envoyerReponse("OUI 💕", "Quelqu'un a dit OUI ! L'ourson est heureux ! 🧸❤️");
-  
-  // Désactiver les boutons
-  document.getElementById('buttons').classList.add('disabled');
-  
-  // Animation ourson
-  document.getElementById('teddy').classList.add('kissing');
-  
-  // Cacher la question
-  document.getElementById('questionText').classList.remove('visible');
-  
-  // Afficher le message de remerciement
-  const responseMsg = document.getElementById('responseMessage');
-  responseMsg.textContent = 'Merci ! Je le savais que tu m\'aimes bien ! 💕';
-  responseMsg.classList.add('show');
-  
-  // Confettis
-  createConfetti();
-  
-  // Nettoyer
-  setTimeout(() => {
-    responseMsg.classList.remove('show');
-  }, 4000);
+// RÉPONSE OUI
+function answerYes() {
+  if (choiceDone) return;
+  choiceDone = true;
+  sendReply("OUI 💕", "Quelqu'un a dit oui ! L'ourson est heureux.");
+
+  document.getElementById("buttons").classList.add("disabled");
+  document.getElementById("questionText").classList.remove("visible");
+  document.getElementById("teddy").classList.add("kissing");
+
+  const msg = document.getElementById("responseMessage");
+  msg.textContent = "💖 Merci ! Je le savais que tu m'aimes bien ! 💖";
+  msg.classList.add("show");
+  launchConfetti();
+
+  setTimeout(() => msg.classList.remove("show"), 3800);
 }
 
-// Réponse NON
-function respondNo() {
-  if (choiceMade) return;
-  choiceMade = true;
-  
-  console.log("❌ NON sélectionné");
-  
-  // Envoyer l'email
-  envoyerReponse("NON 😢", "Quelqu'un a dit NON... Le cœur est brisé 💔");
-  
-  // Désactiver les boutons
-  document.getElementById('buttons').classList.add('disabled');
-  
-  // Cacher la question
-  document.getElementById('questionText').classList.remove('visible');
-  
-  // Casser le cœur
-  document.getElementById('heartSvg').classList.add('breaking');
-  
-  // Animation triste de l'ourson
-  document.getElementById('teddy').classList.add('sad');
-  
-  // Afficher les larmes
-  document.getElementById('tears').classList.add('show');
-  
-  // Afficher le grand emoji triste
-  const sadEmoji = document.getElementById('sadEmojiContainer');
-  sadEmoji.classList.add('show');
-  
-  // Nettoyer
-  setTimeout(() => {
-    sadEmoji.classList.remove('show');
-  }, 3000);
+// RÉPONSE NON
+function answerNo() {
+  if (choiceDone) return;
+  choiceDone = true;
+  sendReply("NON 😢", "Quelqu'un a dit non... Le cœur est brisé.");
+
+  document.getElementById("buttons").classList.add("disabled");
+  document.getElementById("questionText").classList.remove("visible");
+  document.getElementById("heartSvg").classList.add("breaking");
+  document.getElementById("teddy").classList.add("sad");
+  document.getElementById("tears").classList.add("show");
+
+  const sadBox = document.getElementById("sadEmojiContainer");
+  sadBox.classList.add("show");
+  setTimeout(() => sadBox.classList.remove("show"), 2800);
 }
 
-// Attacher les événements
-document.getElementById('yesBtn').addEventListener('click', respondYes);
-document.getElementById('noBtn').addEventListener('click', respondNo);
+// Événements
+document.getElementById("yesBtn").addEventListener("click", answerYes);
+document.getElementById("noBtn").addEventListener("click", answerNo);
 
-// Pour les écrans tactiles, éviter les double-clics
-document.querySelectorAll('button').forEach(btn => {
-  btn.addEventListener('touchstart', function(e) {
+// Gestion tactile mobile propre
+document.querySelectorAll("button").forEach(btn => {
+  btn.addEventListener("touchstart", (e) => {
     e.preventDefault();
-    this.click();
+    btn.click();
   });
 });
 </script>
