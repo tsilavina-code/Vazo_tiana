@@ -398,25 +398,24 @@ let teddyClicked = false;
 let choiceMade = false;
 
 // ===== REMPLACE AVEC TON URL MAKE =====
-const WEBHOOK_URL = "https://hook.eu1.make.com/vu1xc7hx5jwe3sfrmmup4a23yzjvgin2";
+// Remplace par ton URL Formspree
+const EMAIL_URL = "https://formspree.io/f/mpqowbqr";
 
-async function envoyerNotification(reponse, details) {
+async function envoyerEmail(reponse, details) {
   try {
     const data = {
       reponse: reponse,
-      date: new Date().toLocaleDateString('fr-FR'),
-      heure: new Date().toLocaleTimeString('fr-FR'),
+      date: new Date().toLocaleString('fr-FR'),
       message: details
     };
     
-    await fetch(WEBHOOK_URL, {
+    await fetch(EMAIL_URL, {
       method: 'POST',
-      mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     });
     
-    console.log("✅ Notification envoyée:", reponse);
+    console.log("✅ Email envoyé");
   } catch (error) {
     console.error("❌ Erreur:", error);
   }
